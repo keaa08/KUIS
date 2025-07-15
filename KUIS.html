@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kuis Sejarah Indonesia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #1e3a8a, #7e22ce);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      background: #1f2937;
+      padding: 30px;
+      width: 100%;
+      max-width: 720px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      animation: fadeScale 0.6s ease;
+      color: white;
+    }
+
+    @keyframes fadeScale {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    h2 {
+      text-align: center;
+      color: #facc15;
+      font-weight: 700;
+      font-size: 30px;
+    }
+
+    .keterangan, .guru {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #e2e8f0;
+      margin: 10px 0 5px;
+      display: block;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      background: #334155;
+      color: white;
+    }
+
+    .btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+
+    .btn:hover:enabled {
+      background: #2563eb;
+      transform: scale(1.02);
+    }
+
+    .soal {
+      margin-top: 22px;
+    }
+
+    .soal p {
+      font-weight: 700;
+      font-size: 19px;
+      color: #f1f5f9;
+      margin-bottom: 10px;
+    }
+
+    .jawaban {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #334155;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .jawaban label {
+      display: flex;
+      align-items: center;
+      background: #475569;
+      border-radius: 6px;
+      padding: 10px 12px;
+      cursor: pointer;
+      color: white;
+      transition: background 0.2s;
+    }
+
+    .jawaban label:hover {
+      background: #64748b;
+    }
+
+    input[type="radio"] {
+      margin-right: 8px;
+    }
+
+    #hasil {
+      margin-top: 30px;
+      padding: 25px;
+      border-radius: 14px;
+      background: #0f172a;
+      color: white;
+      border: 2px solid #38bdf8;
+      animation: fadeScale 0.5s ease-in-out;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    }
+
+    #hasil h3 {
+      margin-top: 0;
+      font-size: 24px;
+      color: #facc15;
+    }
+
+    #timer {
+      text-align: right;
+      font-weight: 700;
+      color: #f87171;
+      margin-bottom: 10px;
+    }
+
+    #progressBar {
+      width: 100%;
+      height: 8px;
+      background-color: #475569;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    #progress {
+      height: 100%;
+      background-color: #facc15;
+      width: 100%;
+      transition: width 1s linear;
+    }
+
+    .penjelasan {
+      margin-top: 20px;
+      background: #fef3c7;
+      color: #1e293b;
+      border-left: 6px solid #facc15;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      .soal p {
+        font-size: 17px;
+      }
+
+      .btn {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Kuis Sejarah Indonesia</h2>
+    <div class="keterangan">Kelas 5 • Durasi 60 menit</div>
+    <div class="guru">Guru: Muhammad Ilham Dawud</div>
+
+    <label for="nama">Nama Peserta</label>
+    <input type="text" id="nama" placeholder="Masukkan nama lengkap" />
+
+    <label for="absen">Nomor Absen</label>
+    <input type="number" id="absen" placeholder="Contoh: 12" min="1" />
+
+    <button class="btn" id="btnMulai">Mulai Kuis</button>
+
+    <div id="kuis" style="display: none;">
+      <div id="timer">Sisa waktu: 60:00</div>
+      <div id="progressBar"><div id="progress"></div></div>
+
+      <!-- Soal 1–5 -->
+      <div class="soal">
+        <p>1. Siapa presiden pertama Indonesia?</p>
+        <div class="jawaban">
+          <label><input type="radio" name="q1" value="salah"> Megawati</label>
+          <label><input type="radio" name="q1" value="benar"> Soekarno</label>
+          <label><input type="radio" name="q1" value="salah"> Jokowi</label>
+          <label><input type="radio" name="q1" value="salah"> Habibie</label>
+        </div>
+      </div>
+
+      <div class="soal">
+        <p>2. Tahun berapa Indonesia merdeka?</p>
+        <div class="jawaban">
+          <label><input type="radio" name="q2" value="benar"> 1945</label>
+          <label><input type="radio" name="q2" value="salah"> 1950</label>
+          <label><input type="radio" name="q2" value="salah"> 1965</label>
+          <label><input type="radio" name="q2" value="salah"> 1930</label>
+        </div>
+      </div>
+
+      <div class="soal">
+        <p>3. Lambang negara Indonesia adalah?</p>
+        <div class="jawaban">
+          <label><input type="radio" name="q3" value="salah"> Bendera</label>
+          <label><input type="radio" name="q3" value="salah"> Peta</label>
+          <label><input type="radio" name="q3" value="benar"> Garuda Pancasila</label>
+          <label><input type="radio" name="q3" value="salah"> Monas</label>
+        </div>
+      </div>
+
+      <div class="soal">
+        <p>4. Siapa proklamator kemerdekaan Indonesia?</p>
+        <div class="jawaban">
+          <label><input type="radio" name="q4" value="benar"> Soekarno dan Hatta</label>
+          <label><input type="radio" name="q4" value="salah"> Soeharto dan Jokowi</label>
+          <label><input type="radio" name="q4" value="salah"> Megawati dan Gus Dur</label>
+          <label><input type="radio" name="q4" value="salah"> Habibie dan Megawati</label>
+        </div>
+      </div>
+
+      <div class="soal">
+        <p>5. Warna dasar bendera Indonesia adalah?</p>
+        <div class="jawaban">
+          <label><input type="radio" name="q5" value="salah"> Hijau dan Kuning</label>
+          <label><input type="radio" name="q5" value="benar"> Merah dan Putih</label>
+          <label><input type="radio" name="q5" value="salah"> Biru dan Hitam</label>
+          <label><input type="radio" name="q5" value="salah"> Kuning dan Putih</label>
+        </div>
+      </div>
+
+      <button class="btn" onclick="submitKuis()">Submit Jawaban</button>
+    </div>
+
+    <div id="hasil"></div>
+  </div>
+
+  <script>
+    let waktuMulai;
+    let waktuTotal = 60 * 60;
+    let hitungMundur;
+
+    function mulaiKuis() {
+      const nama = document.getElementById("nama").value.trim();
+      const absen = document.getElementById("absen").value.trim();
+      if (nama === "" || absen === "") {
+        alert("Silakan isi nama dan nomor absen terlebih dahulu.");
+        return;
+      }
+
+      const tombol = document.getElementById("btnMulai");
+      tombol.disabled = true;
+      tombol.style.opacity = "0.6";
+      tombol.style.cursor = "not-allowed";
+
+      waktuMulai = new Date();
+      document.getElementById("kuis").style.display = "block";
+      mulaiTimer(waktuTotal);
+    }
+
+    function mulaiTimer(detikAwal) {
+      let sisa = detikAwal;
+      hitungMundur = setInterval(() => {
+        const menit = Math.floor(sisa / 60);
+        const detik = sisa % 60;
+        document.getElementById("timer").innerText =
+          `Sisa waktu: ${menit}:${detik < 10 ? "0" + detik : detik}`;
+        document.getElementById("progress").style.width = (sisa / waktuTotal * 100) + "%";
+        if (sisa <= 0) {
+          clearInterval(hitungMundur);
+          alert("⏰ Waktu habis!");
+          window.location.href = "about:blank";
+        }
+        sisa--;
+      }, 1000);
+    }
+
+    function submitKuis() {
+      clearInterval(hitungMundur);
+      const nama = document.getElementById("nama").value;
+      const absen = document.getElementById("absen").value;
+      const waktuSelesai = new Date();
+      const durasi = Math.round((waktuSelesai - waktuMulai) / 1000);
+
+      const soal = [
+        { name: "q1", benar: "Soekarno" },
+        { name: "q2", benar: "1945" },
+        { name: "q3", benar: "Garuda Pancasila" },
+        { name: "q4", benar: "Soekarno dan Hatta" },
+        { name: "q5", benar: "Merah dan Putih" }
+      ];
+
+      let benar = 0;
+      let pembahasan = "";
+
+      for (let i = 0; i < soal.length; i++) {
+        const input = document.querySelector(`input[name="${soal[i].name}"]:checked`);
+        if (!input) {
+          alert("Silakan jawab semua soal terlebih dahulu.");
+          return;
+        }
+        if (input.value === "benar") {
+          benar++;
+        } else {
+          pembahasan += `<p><strong>Soal ${i + 1}:</strong> Jawaban salah. Jawaban yang benar adalah <em>${soal[i].benar}</em>.</p>`;
+        }
+      }
+
+      const skor = benar * 20;
+      document.querySelectorAll("input[type='radio']").forEach(input => input.disabled = true);
+      document.getElementById("hasil").style.display = "block";
+      document.getElementById("hasil").innerHTML = `
+        <h3>📊 Hasil Kuis</h3>
+        <p><strong>👤 Nama:</strong> ${nama}</p>
+        <p><strong>📋 Absen:</strong> ${absen}</p>
+        <p><strong>🎯 Skor:</strong> ${skor}/100</p>
+        <p><strong>✅ Jawaban Benar:</strong> ${benar}/5</p>
+        <p><strong>⏱️ Waktu Mengerjakan:</strong> ${durasi} detik</p>
+        ${pembahasan ? `<div class="penjelasan"><strong>📝 Penjelasan:</strong>${pembahasan}</div>` : ""}
+      `;
+    }
+
+    // Ini penting agar tombol bisa dipencet di semua browser HP
+    document.getElementById("btnMulai").addEventListener("click", mulaiKuis);
+  </script>
+</body>
+</html>
